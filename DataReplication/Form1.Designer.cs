@@ -36,6 +36,7 @@
             this.lab_Space = new System.Windows.Forms.Label();
             this.btn_MD5 = new System.Windows.Forms.Button();
             this.btn_VerifyFiles = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -117,11 +118,20 @@
             this.btn_VerifyFiles.UseVisualStyleBackColor = true;
             this.btn_VerifyFiles.Click += new System.EventHandler(this.btn_VerifyFiles_Click);
             // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(74, 90);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(636, 23);
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.TabIndex = 10;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 435);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.btn_VerifyFiles);
             this.Controls.Add(this.btn_MD5);
             this.Controls.Add(this.lab_Space);
@@ -151,6 +161,7 @@
         private System.Windows.Forms.Label lab_Space;
         private System.Windows.Forms.Button btn_MD5;
         private System.Windows.Forms.Button btn_VerifyFiles;
+        private System.Windows.Forms.ProgressBar progressBar;
     }
 }
 

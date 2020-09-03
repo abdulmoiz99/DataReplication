@@ -6,6 +6,8 @@ namespace DataReplication
 {
     static class DirectoryModel
     {
+        public static int fileCount = 0;
+        public static int totalFiles = 0;
 
         public static bool CheckFilesInDir(string path)
         {
@@ -50,7 +52,7 @@ namespace DataReplication
 
 
         }
-        public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
+        public static void DirectoryCopy(ProgressBar bar, string sourceDirName, string destDirName, bool copySubDirs)
         {
             // Get the subdirectories for the specified directory.
             DirectoryInfo dir = new DirectoryInfo(sourceDirName);
@@ -76,7 +78,8 @@ namespace DataReplication
             {
                 string temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, false);
-
+                fileCount++;
+                bar.Value = (fileCount * 100) / totalFiles;
             }
             // If copying subdirectories, copy them and their contents to new location.
             if (copySubDirs)
@@ -84,8 +87,12 @@ namespace DataReplication
                 foreach (DirectoryInfo subdir in dirs)
                 {
                     string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    DirectoryCopy(bar, subdir.FullName, temppath, copySubDirs);
                 }
+            }
+            if (bar.Value >= 100) 
+            {
+                bar.Value = 0;
             }
         }
         private static string FormatBytes(long bytes)

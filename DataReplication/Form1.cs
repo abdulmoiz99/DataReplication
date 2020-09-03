@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DataReplication
@@ -33,11 +34,12 @@ namespace DataReplication
         }
         private void btn_Copy_Click(object sender, EventArgs e)
         {
-
+            string[] allFiles = Directory.GetFiles(@"" + Application.StartupPath + " \\Shared", "*.*", SearchOption.AllDirectories);
             try
             {
                 string path = txt_DesPath.Text;
-
+                DirectoryModel.totalFiles = allFiles.Length;
+                DirectoryModel.fileCount = 0;
                 if (DirectoryModel.CheckFilesInDir(path))
                 {
                     DialogResult YorN = MessageBox.Show("Files already exist, do you want to replace all the files?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -45,14 +47,14 @@ namespace DataReplication
                     {
                         if (DirectoryModel.EmptyDir(path))
                         {
-                            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
+                            DirectoryModel.DirectoryCopy(progressBar, @"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
                             MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
                 else
                 {
-                    DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
+                    DirectoryModel.DirectoryCopy(progressBar, @"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
                     MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
