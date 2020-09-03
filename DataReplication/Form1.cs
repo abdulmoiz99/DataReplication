@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace DataReplication
@@ -11,127 +10,87 @@ namespace DataReplication
         {
             InitializeComponent();
         }
-
         private void btn_Browse_Click(object sender, EventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            try
             {
-                DialogResult result = fbd.ShowDialog();
-
-                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                using (var fbd = new FolderBrowserDialog())
                 {
-                    FolderPath = fbd.SelectedPath;
+                    DialogResult result = fbd.ShowDialog();
+
+                    if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                    {
+                        FolderPath = fbd.SelectedPath;
+                    }
                 }
+                txt_DesPath.Text = FolderPath;
+                lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
-
         private void btn_Copy_Click(object sender, EventArgs e)
         {
-            txt_DesPath.SelectionLength = 0;
 
-
-            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
-            MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        }
-
-
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
-            lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
-
-        }
-    }
-    static class DirectoryModel
-    {
-        public static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)
-        {
-            // Get the subdirectories for the specified directory.
-            DirectoryInfo dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
-
-            if (!dir.Exists)
+            try
             {
-                throw new DirectoryNotFoundException(
-                    "Source directory does not exist or could not be found: "
-                    + sourceDirName);
-            }
+                string path = txt_DesPath.Text;
 
-            // If the destination directory doesn't exist, create it.
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            // Get the files in the directory and copy them to the new location.
-            FileInfo[] files = dir.GetFiles();
-
-            foreach (FileInfo file in files)
-            {
-                string temppath = Path.Combine(destDirName, file.Name);
-                if (File.Exists(temppath))
+                if (DirectoryModel.CheckFilesInDir(path))
                 {
-
+                    DialogResult YorN = MessageBox.Show("Files already exist, do you want to replace all the files?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (YorN == DialogResult.Yes)
+                    {
+                        if (DirectoryModel.EmptyDir(path))
+                        {
+                            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
+                            MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
                 }
                 else
                 {
-                    file.CopyTo(temppath, false);
-
-                }
-
-
-            }
-            // If copying subdirectories, copy them and their contents to new location.
-            if (copySubDirs)
-            {
-                foreach (DirectoryInfo subdir in dirs)
-                {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
-                    DirectoryCopy(subdir.FullName, temppath, copySubDirs);
+                    DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
+                    MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-        }
-        private static string FormatBytes(long bytes)
-        {
-            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
-            int i;
-            double dblSByte = bytes;
-            for (i = 0; i < Suffix.Length && bytes >= 1024; i++, bytes /= 1024)
+            catch (Exception ex)
             {
-                dblSByte = bytes / 1024.0;
+                MessageBox.Show(ex.Message);
             }
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
+                lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
-            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
-        }
-        public static string displayAvailableSpace(string path)
+        private void btn_MD5_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(path))
-            {
-                string driveName = path.Substring(0, 3);
-                return "Available Space: " + FormatBytes(GetTotalFreeSpace(driveName));
-            }
-            else return "Available Space:";
+            Md5.GenerateMd5(@"" + Application.StartupPath + " \\Shared");
         }
-        public static string CheckDirectory(string path)
+
+        private void btn_VerifyFiles_Click(object sender, EventArgs e)
         {
-            if (Directory.Exists(path))
+            string path = txt_DesPath.Text;
+            if (Md5.ComapreMd5(path))
             {
-                return path;
+                MessageBox.Show("Verification Successfull", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            else return string.Empty;
-        }
-        private static long GetTotalFreeSpace(string driveName)
-        {
-            foreach (DriveInfo drive in DriveInfo.GetDrives())
+            else
             {
-                if (drive.IsReady && drive.Name == driveName)
-                {
-                    return drive.TotalFreeSpace;
-                }
+                MessageBox.Show("Files are encrypted or missing", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return -1;
         }
+
     }
 }
