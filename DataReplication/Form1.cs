@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 
 namespace DataReplication
@@ -73,6 +74,9 @@ namespace DataReplication
         {
             try
             {
+                string[] configuration = File.ReadAllLines(Application.StartupPath + "\\DataReplication.config");
+                string productName = configuration[0].Substring(configuration[0].IndexOf('=') + 1);
+                lab_installerName.Text = "The Installer for " + productName;
                 txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
                 lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
             }

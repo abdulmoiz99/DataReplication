@@ -38,7 +38,7 @@
             this.btn_VerifyFiles = new System.Windows.Forms.Button();
             this.lab_Status = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lab_installerName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -134,21 +134,21 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // label2
+            // lab_installerName
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(234, 20);
-            this.label2.TabIndex = 11;
-            this.label2.Text = "The installer for [product name]";
+            this.lab_installerName.AutoSize = true;
+            this.lab_installerName.Location = new System.Drawing.Point(14, 18);
+            this.lab_installerName.Name = "lab_installerName";
+            this.lab_installerName.Size = new System.Drawing.Size(236, 20);
+            this.lab_installerName.TabIndex = 11;
+            this.lab_installerName.Text = "The Installer for [product name]";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(934, 435);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lab_installerName);
             this.Controls.Add(this.lab_Status);
             this.Controls.Add(this.btn_VerifyFiles);
             this.Controls.Add(this.btn_MD5);
@@ -162,7 +162,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Installer";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -181,7 +181,7 @@
         private System.Windows.Forms.Button btn_VerifyFiles;
         private System.Windows.Forms.Label lab_Status;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lab_installerName;
     }
 }
 
