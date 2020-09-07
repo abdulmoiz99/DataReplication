@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace DataReplication
@@ -45,21 +46,28 @@ namespace DataReplication
                     {
                         if (DirectoryModel.EmptyDir(path))
                         {
-                            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
-                            MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            CopyFiles();
                         }
                     }
                 }
                 else
                 {
-                    DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
-                    MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     CopyFiles();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+        private void CopyFiles()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            System.Threading.Thread.Sleep(500);
+            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
+            MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.Cursor = Cursors.Default;
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -76,21 +84,32 @@ namespace DataReplication
 
         private void btn_MD5_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             Md5.GenerateMd5(@"" + Application.StartupPath + " \\Shared");
+            this.Cursor = Cursors.Default;
         }
 
         private void btn_VerifyFiles_Click(object sender, EventArgs e)
         {
             string path = txt_DesPath.Text;
+            this.Cursor = Cursors.WaitCursor;
+
             if (Md5.ComapreMd5(path))
             {
+                this.Cursor = Cursors.Default;
                 MessageBox.Show("Verification Successfull", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 MessageBox.Show("Files are encrypted or missing", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            this.Cursor = Cursors.Default;
+
         }
 
+        private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            CopyFiles();
+        }
     }
 }
