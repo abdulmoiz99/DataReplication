@@ -64,19 +64,19 @@ namespace DataReplication
         private void CopyFiles()
         {
             this.Cursor = Cursors.WaitCursor;
+            lab_Status.Text = "Status: Copying Files...";
             System.Threading.Thread.Sleep(500);
             DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
-            MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            lab_Status.Text = "Status: Ready to Copy Files";
             this.Cursor = Cursors.Default;
-
+            MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             try
             {
-                string[] configuration = File.ReadAllLines(Application.StartupPath + "\\DataReplication.config");
-                string productName = configuration[0].Substring(configuration[0].IndexOf('=') + 1);
-                lab_installerName.Text = "The Installer for " + productName;
+                ConfigureProperties();
                 txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
                 lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
             }
@@ -84,6 +84,13 @@ namespace DataReplication
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void ConfigureProperties()
+        {
+            string[] configuration = File.ReadAllLines(Application.StartupPath + "\\DataReplication.config");
+            string productName = configuration[0].Substring(configuration[0].IndexOf('=') + 1);
+            lab_installerName.Text = "The Installer for " + productName;
         }
 
         private void btn_MD5_Click(object sender, EventArgs e)

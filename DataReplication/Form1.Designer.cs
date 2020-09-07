@@ -125,9 +125,9 @@
             this.lab_Status.AutoSize = true;
             this.lab_Status.Location = new System.Drawing.Point(72, 192);
             this.lab_Status.Name = "lab_Status";
-            this.lab_Status.Size = new System.Drawing.Size(166, 20);
+            this.lab_Status.Size = new System.Drawing.Size(202, 20);
             this.lab_Status.TabIndex = 10;
-            this.lab_Status.Text = "Status: Copying Files...";
+            this.lab_Status.Text = "Status: Ready to Copy Files";
             this.lab_Status.Visible = false;
             // 
             // backgroundWorker1
