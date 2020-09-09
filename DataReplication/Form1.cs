@@ -41,12 +41,12 @@ namespace DataReplication
             try
             {
                 string path = txt_DesPath.Text;
-                if (rdo_32bit.Checked==true)
+                if (cb_32bit.Checked==true)
                 {
                    // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy32bitPlugin();
                 }
-                else if (rdo_64bit.Checked==true)
+                if(cb_64bit.Checked==true)
                 {
                    // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy64bitPlugin();
@@ -106,6 +106,7 @@ namespace DataReplication
             {
                 ConfigureProperties();
                 txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
+                if (txt_DesPath.Text == @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets") cb_DefaultFolder.Checked = true;
                 txt_VSTFolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
                 lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
                 lab_VSTSpace.Text = DirectoryModel.displayAvailableSpace(txt_VSTFolderPath.Text);
@@ -182,5 +183,24 @@ namespace DataReplication
             }
         }
 
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void cb_DefaultFolder_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_DefaultFolder.Checked)
+            {
+                txt_DesPath.Text = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
+                txt_DesPath.ReadOnly = true;
+                btn_Browse.Enabled = false;
+            }
+            else 
+            {
+                txt_DesPath.ReadOnly = false;
+                btn_Browse.Enabled = true;
+            }
+        }
     }
 }
