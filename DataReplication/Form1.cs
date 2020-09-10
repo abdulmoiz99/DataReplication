@@ -8,7 +8,8 @@ namespace DataReplication
     public partial class Form1 : Form
     {
         string FolderPath = "";
-        string FolderPathVST = "";
+        string FolderPathVST32bit = "";
+        string FolderPathVST64bit="";
 
         public Form1()
         {
@@ -41,14 +42,14 @@ namespace DataReplication
             try
             {
                 string path = txt_DesPath.Text;
-                if (cb_32bit.Checked==true)
+                if (cb_32bit.Checked == true)
                 {
-                   // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
+                    // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy32bitPlugin();
                 }
-                if(cb_64bit.Checked==true)
+                if (cb_64bit.Checked == true)
                 {
-                   // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
+                    // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy64bitPlugin();
                 }
                 if (DirectoryModel.CheckFilesInDir(path))
@@ -59,12 +60,16 @@ namespace DataReplication
                         if (DirectoryModel.EmptyDir(path))
                         {
                             CopyFiles();
+                            CopyNspFiles();
+                            CopyNsbFiles();
                         }
                     }
                 }
                 else
                 {
-                     CopyFiles();
+                    CopyFiles();
+                    CopyNspFiles();
+                    CopyNsbFiles();
                 }
             }
             catch (Exception ex)
@@ -77,7 +82,7 @@ namespace DataReplication
             this.Cursor = Cursors.WaitCursor;
             lab_Status.Text = "Status: Copying Files...";
             panel1.Refresh();
-            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Shared", txt_DesPath.Text, true);
+            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\SampleSets", txt_DesPath.Text, true);
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
             MessageBox.Show("Files copied successfully", "Sucess", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -87,7 +92,7 @@ namespace DataReplication
             this.Cursor = Cursors.WaitCursor;
             lab_Status.Text = "Status: Copying 32 bit plugin...";
             panel1.Refresh();
-            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\32 bit", txt_VSTFolderPath.Text, true);
+            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\32 bit", txt_32FolderPath.Text + "32bit", true);
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
         }
@@ -96,9 +101,44 @@ namespace DataReplication
             this.Cursor = Cursors.WaitCursor;
             lab_Status.Text = "Status: Copying 64 bit plugin...";
             panel1.Refresh();
-            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\64 bit", txt_VSTFolderPath.Text, true);
+            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\64 bit", txt_64FolderPath.Text, true);
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
+        }
+        private void CopyNspFiles()
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                lab_Status.Text = "Status: Copying .nsp files...";
+                panel1.Refresh();
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nspFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets", true);
+                this.Cursor = Cursors.Default;
+                lab_Status.Text = "Status: Ready to Copy Files";
+
+            }
+            catch (Exception) {
+                lab_Status.Text = "Status: .nsp Files Already Exists";
+                this.Cursor = Cursors.Default;
+
+            }
+        }
+        private void CopyNsbFiles()
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                lab_Status.Text = "Status: Copying .nsp files...";
+                panel1.Refresh();
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks", true);
+                this.Cursor = Cursors.Default;
+                lab_Status.Text = "Status: Ready to Copy Files";
+
+            }
+            catch (Exception) {
+                lab_Status.Text = "Status: .nsb Files Already Exists";
+                this.Cursor = Cursors.Default;
+            }
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -107,9 +147,9 @@ namespace DataReplication
                 ConfigureProperties();
                 txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
                 if (txt_DesPath.Text == @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets") cb_DefaultFolder.Checked = true;
-                txt_VSTFolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
+                txt_32FolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
                 lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
-                lab_VSTSpace.Text = DirectoryModel.displayAvailableSpace(txt_VSTFolderPath.Text);
+                lab_Space64bit.Text = DirectoryModel.displayAvailableSpace(txt_32FolderPath.Text);
 
             }
             catch (Exception ex)
@@ -123,7 +163,6 @@ namespace DataReplication
             string InstallerName = configuration[0];
             lab_installerName.Text = InstallerName;
         }
-
         private void btn_MD5_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -145,7 +184,7 @@ namespace DataReplication
             if (Md5.ComapreMd5(path))
             {
                 this.Cursor = Cursors.Default;
-                
+
                 MessageBox.Show("Verification Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -171,11 +210,11 @@ namespace DataReplication
 
                     if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                     {
-                        FolderPathVST = fbd.SelectedPath;
+                        FolderPathVST32bit = fbd.SelectedPath;
                     }
                 }
-                txt_VSTFolderPath.Text = FolderPathVST;
-                lab_VSTSpace.Text = DirectoryModel.displayAvailableSpace(txt_VSTFolderPath.Text);
+                txt_32FolderPath.Text = FolderPathVST32bit;
+                lab_Space32bit.Text = DirectoryModel.displayAvailableSpace(txt_32FolderPath.Text);
             }
             catch (Exception ex)
             {
@@ -196,10 +235,63 @@ namespace DataReplication
                 txt_DesPath.ReadOnly = true;
                 btn_Browse.Enabled = false;
             }
-            else 
+            else
             {
                 txt_DesPath.ReadOnly = false;
                 btn_Browse.Enabled = true;
+            }
+        }
+        private void CheckVSTFolder()
+        {
+            if (cb_32bit.Checked == true)
+            {
+                txt_32FolderPath.Enabled = true;
+                btn_BrowseVST32bit.Enabled = true;
+            }
+            else
+            {
+                txt_32FolderPath.Enabled = false;
+                btn_BrowseVST32bit.Enabled = false;
+            }
+            if (cb_64bit.Checked == true)
+            {
+                txt_64FolderPath.Enabled = true;
+                btn_BrowseVST64bit.Enabled = true;
+            }
+            else
+            {
+                txt_64FolderPath.Enabled = false;
+                btn_BrowseVST64bit.Enabled = false;
+            }
+        }
+        private void cb_32bit_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckVSTFolder();
+        }
+
+        private void cb_64bit_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckVSTFolder();
+        }
+
+        private void btn_BrowseVST64bit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var fbd = new FolderBrowserDialog())
+                {
+                    DialogResult result = fbd.ShowDialog();
+                    if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                    {
+                        FolderPathVST64bit = fbd.SelectedPath;
+                    }
+                }
+                txt_64FolderPath.Text = FolderPathVST64bit;
+                lab_Space64bit.Text = DirectoryModel.displayAvailableSpace(txt_64FolderPath.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

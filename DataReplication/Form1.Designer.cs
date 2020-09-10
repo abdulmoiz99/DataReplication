@@ -39,15 +39,20 @@
             this.lab_Status = new System.Windows.Forms.Label();
             this.lab_installerName = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lab_VSTSpace = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.btn_BrowseVST = new System.Windows.Forms.Button();
-            this.txt_VSTFolderPath = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cb_32bit = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lab_Space32bit = new System.Windows.Forms.Label();
+            this.btn_BrowseVST64bit = new System.Windows.Forms.Button();
+            this.txt_64FolderPath = new System.Windows.Forms.TextBox();
             this.cb_64bit = new System.Windows.Forms.CheckBox();
+            this.cb_32bit = new System.Windows.Forms.CheckBox();
+            this.lab_Space64bit = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btn_BrowseVST32bit = new System.Windows.Forms.Button();
+            this.txt_32FolderPath = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cb_DefaultFolder = new System.Windows.Forms.CheckBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -152,60 +157,143 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.lab_Space32bit);
+            this.groupBox1.Controls.Add(this.btn_BrowseVST64bit);
+            this.groupBox1.Controls.Add(this.txt_64FolderPath);
             this.groupBox1.Controls.Add(this.cb_64bit);
             this.groupBox1.Controls.Add(this.cb_32bit);
-            this.groupBox1.Controls.Add(this.lab_VSTSpace);
+            this.groupBox1.Controls.Add(this.lab_Space64bit);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.btn_BrowseVST);
-            this.groupBox1.Controls.Add(this.txt_VSTFolderPath);
+            this.groupBox1.Controls.Add(this.btn_BrowseVST32bit);
+            this.groupBox1.Controls.Add(this.txt_32FolderPath);
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(12, 41);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(760, 156);
+            this.groupBox1.Size = new System.Drawing.Size(760, 214);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Plugin";
             // 
-            // lab_VSTSpace
+            // label5
             // 
-            this.lab_VSTSpace.AutoSize = true;
-            this.lab_VSTSpace.ForeColor = System.Drawing.Color.White;
-            this.lab_VSTSpace.Location = new System.Drawing.Point(133, 91);
-            this.lab_VSTSpace.Name = "lab_VSTSpace";
-            this.lab_VSTSpace.Size = new System.Drawing.Size(138, 20);
-            this.lab_VSTSpace.TabIndex = 18;
-            this.lab_VSTSpace.Text = "Available Space: ";
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(79, 138);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 20);
+            this.label5.TabIndex = 27;
+            this.label5.Text = "64-bit:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(83, 80);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 20);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "32-bit";
+            // 
+            // lab_Space32bit
+            // 
+            this.lab_Space32bit.AutoSize = true;
+            this.lab_Space32bit.ForeColor = System.Drawing.Color.White;
+            this.lab_Space32bit.Location = new System.Drawing.Point(133, 107);
+            this.lab_Space32bit.Name = "lab_Space32bit";
+            this.lab_Space32bit.Size = new System.Drawing.Size(138, 20);
+            this.lab_Space32bit.TabIndex = 25;
+            this.lab_Space32bit.Text = "Available Space: ";
+            // 
+            // btn_BrowseVST64bit
+            // 
+            this.btn_BrowseVST64bit.Enabled = false;
+            this.btn_BrowseVST64bit.ForeColor = System.Drawing.Color.Black;
+            this.btn_BrowseVST64bit.Location = new System.Drawing.Point(623, 133);
+            this.btn_BrowseVST64bit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_BrowseVST64bit.Name = "btn_BrowseVST64bit";
+            this.btn_BrowseVST64bit.Size = new System.Drawing.Size(131, 27);
+            this.btn_BrowseVST64bit.TabIndex = 24;
+            this.btn_BrowseVST64bit.Text = "Browse";
+            this.btn_BrowseVST64bit.UseVisualStyleBackColor = true;
+            this.btn_BrowseVST64bit.Click += new System.EventHandler(this.btn_BrowseVST64bit_Click);
+            // 
+            // txt_64FolderPath
+            // 
+            this.txt_64FolderPath.Enabled = false;
+            this.txt_64FolderPath.Location = new System.Drawing.Point(135, 134);
+            this.txt_64FolderPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txt_64FolderPath.Name = "txt_64FolderPath";
+            this.txt_64FolderPath.Size = new System.Drawing.Size(480, 26);
+            this.txt_64FolderPath.TabIndex = 23;
+            // 
+            // cb_64bit
+            // 
+            this.cb_64bit.AutoSize = true;
+            this.cb_64bit.ForeColor = System.Drawing.Color.White;
+            this.cb_64bit.Location = new System.Drawing.Point(210, 26);
+            this.cb_64bit.Name = "cb_64bit";
+            this.cb_64bit.Size = new System.Drawing.Size(67, 24);
+            this.cb_64bit.TabIndex = 22;
+            this.cb_64bit.Text = "64-bit";
+            this.cb_64bit.UseVisualStyleBackColor = true;
+            this.cb_64bit.CheckedChanged += new System.EventHandler(this.cb_64bit_CheckedChanged);
+            // 
+            // cb_32bit
+            // 
+            this.cb_32bit.AutoSize = true;
+            this.cb_32bit.ForeColor = System.Drawing.Color.White;
+            this.cb_32bit.Location = new System.Drawing.Point(137, 26);
+            this.cb_32bit.Name = "cb_32bit";
+            this.cb_32bit.Size = new System.Drawing.Size(67, 24);
+            this.cb_32bit.TabIndex = 21;
+            this.cb_32bit.Text = "32-bit";
+            this.cb_32bit.UseVisualStyleBackColor = true;
+            this.cb_32bit.CheckedChanged += new System.EventHandler(this.cb_32bit_CheckedChanged);
+            // 
+            // lab_Space64bit
+            // 
+            this.lab_Space64bit.AutoSize = true;
+            this.lab_Space64bit.ForeColor = System.Drawing.Color.White;
+            this.lab_Space64bit.Location = new System.Drawing.Point(133, 164);
+            this.lab_Space64bit.Name = "lab_Space64bit";
+            this.lab_Space64bit.Size = new System.Drawing.Size(138, 20);
+            this.lab_Space64bit.TabIndex = 18;
+            this.lab_Space64bit.Text = "Available Space: ";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(11, 59);
+            this.label2.Location = new System.Drawing.Point(131, 53);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(122, 20);
             this.label2.TabIndex = 17;
             this.label2.Text = "VST Folder Path:";
             // 
-            // btn_BrowseVST
+            // btn_BrowseVST32bit
             // 
-            this.btn_BrowseVST.ForeColor = System.Drawing.Color.Black;
-            this.btn_BrowseVST.Location = new System.Drawing.Point(623, 55);
-            this.btn_BrowseVST.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btn_BrowseVST.Name = "btn_BrowseVST";
-            this.btn_BrowseVST.Size = new System.Drawing.Size(131, 27);
-            this.btn_BrowseVST.TabIndex = 16;
-            this.btn_BrowseVST.Text = "Browse";
-            this.btn_BrowseVST.UseVisualStyleBackColor = true;
-            this.btn_BrowseVST.Click += new System.EventHandler(this.btn_BrowseVST_Click);
+            this.btn_BrowseVST32bit.Enabled = false;
+            this.btn_BrowseVST32bit.ForeColor = System.Drawing.Color.Black;
+            this.btn_BrowseVST32bit.Location = new System.Drawing.Point(623, 77);
+            this.btn_BrowseVST32bit.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btn_BrowseVST32bit.Name = "btn_BrowseVST32bit";
+            this.btn_BrowseVST32bit.Size = new System.Drawing.Size(131, 27);
+            this.btn_BrowseVST32bit.TabIndex = 16;
+            this.btn_BrowseVST32bit.Text = "Browse";
+            this.btn_BrowseVST32bit.UseVisualStyleBackColor = true;
+            this.btn_BrowseVST32bit.Click += new System.EventHandler(this.btn_BrowseVST_Click);
             // 
-            // txt_VSTFolderPath
+            // txt_32FolderPath
             // 
-            this.txt_VSTFolderPath.Location = new System.Drawing.Point(137, 56);
-            this.txt_VSTFolderPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txt_VSTFolderPath.Name = "txt_VSTFolderPath";
-            this.txt_VSTFolderPath.Size = new System.Drawing.Size(480, 26);
-            this.txt_VSTFolderPath.TabIndex = 15;
+            this.txt_32FolderPath.Enabled = false;
+            this.txt_32FolderPath.Location = new System.Drawing.Point(135, 77);
+            this.txt_32FolderPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txt_32FolderPath.Name = "txt_32FolderPath";
+            this.txt_32FolderPath.Size = new System.Drawing.Size(480, 26);
+            this.txt_32FolderPath.TabIndex = 15;
             // 
             // groupBox2
             // 
@@ -218,44 +306,12 @@
             this.groupBox2.Controls.Add(this.btn_Browse);
             this.groupBox2.Controls.Add(this.btn_VerifyFiles);
             this.groupBox2.ForeColor = System.Drawing.Color.White;
-            this.groupBox2.Location = new System.Drawing.Point(12, 203);
+            this.groupBox2.Location = new System.Drawing.Point(12, 261);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(760, 128);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Files";
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.lab_Status);
-            this.panel1.Location = new System.Drawing.Point(12, 519);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(617, 34);
-            this.panel1.TabIndex = 11;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // cb_32bit
-            // 
-            this.cb_32bit.AutoSize = true;
-            this.cb_32bit.ForeColor = System.Drawing.Color.White;
-            this.cb_32bit.Location = new System.Drawing.Point(137, 26);
-            this.cb_32bit.Name = "cb_32bit";
-            this.cb_32bit.Size = new System.Drawing.Size(67, 24);
-            this.cb_32bit.TabIndex = 21;
-            this.cb_32bit.Text = "32-bit";
-            this.cb_32bit.UseVisualStyleBackColor = true;
-            // 
-            // cb_64bit
-            // 
-            this.cb_64bit.AutoSize = true;
-            this.cb_64bit.ForeColor = System.Drawing.Color.White;
-            this.cb_64bit.Location = new System.Drawing.Point(210, 26);
-            this.cb_64bit.Name = "cb_64bit";
-            this.cb_64bit.Size = new System.Drawing.Size(67, 24);
-            this.cb_64bit.TabIndex = 22;
-            this.cb_64bit.Text = "64-bit";
-            this.cb_64bit.UseVisualStyleBackColor = true;
             // 
             // cb_DefaultFolder
             // 
@@ -268,6 +324,16 @@
             this.cb_DefaultFolder.Text = "Default Folder";
             this.cb_DefaultFolder.UseVisualStyleBackColor = true;
             this.cb_DefaultFolder.CheckedChanged += new System.EventHandler(this.cb_DefaultFolder_CheckedChanged);
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.lab_Status);
+            this.panel1.Location = new System.Drawing.Point(12, 519);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(617, 34);
+            this.panel1.TabIndex = 11;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // Form1
             // 
@@ -313,14 +379,19 @@
         private System.Windows.Forms.Label lab_installerName;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btn_BrowseVST;
-        private System.Windows.Forms.TextBox txt_VSTFolderPath;
-        private System.Windows.Forms.Label lab_VSTSpace;
+        private System.Windows.Forms.Button btn_BrowseVST32bit;
+        private System.Windows.Forms.TextBox txt_32FolderPath;
+        private System.Windows.Forms.Label lab_Space64bit;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox cb_64bit;
         private System.Windows.Forms.CheckBox cb_32bit;
         private System.Windows.Forms.CheckBox cb_DefaultFolder;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lab_Space32bit;
+        private System.Windows.Forms.Button btn_BrowseVST64bit;
+        private System.Windows.Forms.TextBox txt_64FolderPath;
     }
 }
 
