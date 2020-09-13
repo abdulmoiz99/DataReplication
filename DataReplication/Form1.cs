@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
 
@@ -9,8 +8,11 @@ namespace DataReplication
     {
         string FolderPath = "";
         string FolderPathVST32bit = "";
-        string FolderPathVST64bit="";
+        string FolderPathVST64bit = "";
 
+        string InstrumentsPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments";
+        string BanksPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks";
+        string PresetsPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
         public Form1()
         {
             InitializeComponent();
@@ -38,39 +40,44 @@ namespace DataReplication
         }
         private void btn_Copy_Click(object sender, EventArgs e)
         {
-
             try
             {
                 string path = txt_DesPath.Text;
                 if (cb_32bit.Checked == true)
                 {
-                    // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
+                    //DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy32bitPlugin();
                 }
                 if (cb_64bit.Checked == true)
                 {
-                    // DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
+                    //DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy64bitPlugin();
                 }
-                if (DirectoryModel.CheckFilesInDir(path))
-                {
-                    DialogResult YorN = MessageBox.Show("Files already exist, do you want to replace all the files?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (YorN == DialogResult.Yes)
-                    {
-                        if (DirectoryModel.EmptyDir(path))
-                        {
-                            CopyFiles();
-                            CopyNspFiles();
-                            CopyNsbFiles();
-                        }
-                    }
-                }
-                else
-                {
-                    CopyFiles();
-                    CopyNspFiles();
-                    CopyNsbFiles();
-                }
+                //if (DirectoryModel.CheckFilesInDir(path))
+                //{
+                //    DialogResult YorN = MessageBox.Show("Files already exist, do you want to replace all the files?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                //    if (YorN == DialogResult.Yes)
+                //    {
+                //        if (DirectoryModel.EmptyDir(path))
+                //        {
+                //            CopyFiles();
+                //            CopyNspFiles();
+                //            CopyNsbFiles();
+                //        }
+                //    }
+                //}
+                //else
+                //{
+
+                CopyFiles();
+                CopyNspFiles();
+                CopyNsbFiles();
+                CopyInstruments();
+                CopyBanks();
+                CopyPresets();
+                lab_Status.Text = "Status: Ready to Copy Files";
+
+                //                }
             }
             catch (Exception ex)
             {
@@ -82,6 +89,8 @@ namespace DataReplication
             this.Cursor = Cursors.WaitCursor;
             lab_Status.Text = "Status: Copying Files...";
             panel1.Refresh();
+            RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\SampleSets", txt_DesPath.Text);
+
             DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\SampleSets", txt_DesPath.Text, true);
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
@@ -92,19 +101,96 @@ namespace DataReplication
             this.Cursor = Cursors.WaitCursor;
             lab_Status.Text = "Status: Copying 32 bit plugin...";
             panel1.Refresh();
-            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\32 bit", txt_32FolderPath.Text + "32bit", true);
+            RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\32 bit", txt_32FolderPath.Text);
+            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\32 bit", txt_32FolderPath.Text, true);
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
         }
         private void Copy64bitPlugin()
         {
-            this.Cursor = Cursors.WaitCursor;
-            lab_Status.Text = "Status: Copying 64 bit plugin...";
-            panel1.Refresh();
-            DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\64 bit", txt_64FolderPath.Text, true);
-            this.Cursor = Cursors.Default;
-            lab_Status.Text = "Status: Ready to Copy Files";
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                lab_Status.Text = "Status: Copying 64 bit plugin...";
+                panel1.Refresh();
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\64 bit", txt_64FolderPath.Text);
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\64 bit", txt_64FolderPath.Text, true);
+                this.Cursor = Cursors.Default;
+                lab_Status.Text = "Status: Ready to Copy Files";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+        private void CopyInstruments()
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                lab_Status.Text = "Status: Copying Instruments...";
+                panel1.Refresh();
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\Instruments", InstrumentsPath);
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\Instruments", InstrumentsPath, true);
+                this.Cursor = Cursors.Default;
+                lab_Status.Text = "Status: Ready to Copy Files";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void CopyBanks()
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                lab_Status.Text = "Status: Copying Banks...";
+                panel1.Refresh();
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\Banks", BanksPath);
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\Banks", BanksPath, true);
+                this.Cursor = Cursors.Default;
+                lab_Status.Text = "Status: Ready to Copy Files";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void CopyPresets()
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                lab_Status.Text = "Status: Copying Presets...";
+                panel1.Refresh();
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\Presets", PresetsPath);
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\Presets", PresetsPath, true);
+                this.Cursor = Cursors.Default;
+                lab_Status.Text = "Status: Ready to Copy Files";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void RemoveAlreadyExistFiles(string sourcePath, string desPath)
+        {
+            // get files names of source folder
+            DirectoryInfo dir = new DirectoryInfo(sourcePath);
+            FileInfo[] files = dir.GetFiles();
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                string Path = files[i].ToString();
+                Path = Path.Substring(Path.LastIndexOf('\\') + 1);
+                if (File.Exists(desPath + "\\" + Path))
+                {
+                    File.Delete(desPath + "\\" + Path);
+                }
+            }
+        }
+
         private void CopyNspFiles()
         {
             try
@@ -112,15 +198,16 @@ namespace DataReplication
                 this.Cursor = Cursors.WaitCursor;
                 lab_Status.Text = "Status: Copying .nsp files...";
                 panel1.Refresh();
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\nspFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
                 DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nspFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets", true);
                 this.Cursor = Cursors.Default;
                 lab_Status.Text = "Status: Ready to Copy Files";
 
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 lab_Status.Text = "Status: .nsp Files Already Exists";
                 this.Cursor = Cursors.Default;
-
             }
         }
         private void CopyNsbFiles()
@@ -130,12 +217,14 @@ namespace DataReplication
                 this.Cursor = Cursors.WaitCursor;
                 lab_Status.Text = "Status: Copying .nsp files...";
                 panel1.Refresh();
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks");
                 DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks", true);
                 this.Cursor = Cursors.Default;
                 lab_Status.Text = "Status: Ready to Copy Files";
 
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 lab_Status.Text = "Status: .nsb Files Already Exists";
                 this.Cursor = Cursors.Default;
             }
@@ -145,11 +234,15 @@ namespace DataReplication
             try
             {
                 ConfigureProperties();
-                txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
-                if (txt_DesPath.Text == @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets") cb_DefaultFolder.Checked = true;
+                txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments");
+                if (txt_DesPath.Text == @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments") cb_DefaultFolder.Checked = true;
+
                 txt_32FolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
+                txt_64FolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
+
                 lab_Space.Text = DirectoryModel.displayAvailableSpace(txt_DesPath.Text);
-                lab_Space64bit.Text = DirectoryModel.displayAvailableSpace(txt_32FolderPath.Text);
+                lab_Space32bit.Text = DirectoryModel.displayAvailableSpace(txt_32FolderPath.Text);
+                lab_Space64bit.Text = DirectoryModel.displayAvailableSpace(txt_64FolderPath.Text);
 
             }
             catch (Exception ex)
@@ -172,9 +265,7 @@ namespace DataReplication
             Md5.GenerateMd5(@"" + Application.StartupPath + " \\Shared");
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
-
         }
-
         private void btn_VerifyFiles_Click(object sender, EventArgs e)
         {
             string path = txt_DesPath.Text;
@@ -193,9 +284,7 @@ namespace DataReplication
             }
             this.Cursor = Cursors.Default;
             lab_Status.Text = "Status: Ready to Copy Files";
-
         }
-
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             CopyFiles();
@@ -231,7 +320,6 @@ namespace DataReplication
         {
             if (cb_DefaultFolder.Checked)
             {
-                txt_DesPath.Text = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
                 txt_DesPath.ReadOnly = true;
                 btn_Browse.Enabled = false;
             }
@@ -293,6 +381,11 @@ namespace DataReplication
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+
         }
     }
 }
