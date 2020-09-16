@@ -1,18 +1,32 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
 namespace DataReplication
 {
+    /// <summary>
+    /// App.config
+    /// Line[0] = installer name 
+    /// Line[0] = for paino and Orchestra (1 = Orchesta else Paino)
+    /// Line[0] = to change the visiblity of "generate MD5" button (1 = visible else hide)
+    /// </summary>
     public partial class Form1 : Form
     {
         string FolderPath = "";
         string FolderPathVST32bit = "";
         string FolderPathVST64bit = "";
 
+        int type = 1;
+
+
         string InstrumentsPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments";
         string BanksPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks";
         string PresetsPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
+        string sampleSetPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments";
+        string nspPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
+        string nsbPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks";
+
         public Form1()
         {
             InitializeComponent();
@@ -53,21 +67,6 @@ namespace DataReplication
                     //DirectoryModel.EmptyDir(txt_VSTFolderPath.Text);
                     Copy64bitPlugin();
                 }
-                //if (DirectoryModel.CheckFilesInDir(path))
-                //{
-                //    DialogResult YorN = MessageBox.Show("Files already exist, do you want to replace all the files?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                //    if (YorN == DialogResult.Yes)
-                //    {
-                //        if (DirectoryModel.EmptyDir(path))
-                //        {
-                //            CopyFiles();
-                //            CopyNspFiles();
-                //            CopyNsbFiles();
-                //        }
-                //    }
-                //}
-                //else
-                //{
 
                 CopyFiles();
                 CopyNspFiles();
@@ -76,8 +75,6 @@ namespace DataReplication
                 CopyBanks();
                 CopyPresets();
                 lab_Status.Text = "Status: Ready to Copy Files";
-
-                //                }
             }
             catch (Exception ex)
             {
@@ -198,11 +195,10 @@ namespace DataReplication
                 this.Cursor = Cursors.WaitCursor;
                 lab_Status.Text = "Status: Copying .nsp files...";
                 panel1.Refresh();
-                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\nspFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets");
-                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nspFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets", true);
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\nspFiles", nspPath);
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nspFiles", nspPath, true);
                 this.Cursor = Cursors.Default;
                 lab_Status.Text = "Status: Ready to Copy Files";
-
             }
             catch (Exception)
             {
@@ -217,11 +213,10 @@ namespace DataReplication
                 this.Cursor = Cursors.WaitCursor;
                 lab_Status.Text = "Status: Copying .nsp files...";
                 panel1.Refresh();
-                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks");
-                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks", true);
+                RemoveAlreadyExistFiles(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", nsbPath);
+                DirectoryModel.DirectoryCopy(@"" + Application.StartupPath + " \\Plugins\\nsbFiles", nsbPath, true);
                 this.Cursor = Cursors.Default;
                 lab_Status.Text = "Status: Ready to Copy Files";
-
             }
             catch (Exception)
             {
@@ -233,9 +228,53 @@ namespace DataReplication
         {
             try
             {
+                // for neo orchestra and neo piano 
+                string[] lines = File.ReadAllLines(@"" + Application.StartupPath + " \\App.config");
+                if (lines[1] == "1") type = 1;
+                // for Generate MD5 code button 
+                if (lines[2] == "1") btn_MD5.Visible = true;
+                else btn_MD5.Visible = false;
+              
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unable to read config file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+            }
+            try
+            {
+                Image myimage = new Bitmap(Application.StartupPath + @"\\BackgroundImage.jpg");
+                this.BackgroundImage = myimage;
+            }
+            catch (Exception)
+            {
+
+            }
+            if (type == 1)
+            {
+                InstrumentsPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments";
+                BanksPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks";
+                PresetsPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
+                sampleSetPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments";
+                nspPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Presets";
+                nsbPath = @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Banks";
+                this.Text = "Neo Orchestra Installer";
+            }
+            else
+            {
+                InstrumentsPath = @"C:\Users\Public\Documents\SoundMagic\Neo_Piano\Instruments";
+                BanksPath = @"C:\Users\Public\Documents\SoundMagic\Neo_Piano\Banks";
+                PresetsPath = @"C:\Users\Public\Documents\SoundMagic\Neo_Piano\Presets";
+                sampleSetPath = @"C:\Users\Public\Documents\SoundMagic\Neo_Piano\Instruments";
+                nspPath = @"C:\Users\Public\Documents\SoundMagic\Neo_Piano\Presets";
+                nsbPath = @"C:\Users\Public\Documents\SoundMagic\Neo_Piano\Banks";
+                this.Text = "Neo Piano Installer";
+            }
+            try
+            {
                 ConfigureProperties();
-                txt_DesPath.Text = DirectoryModel.CheckDirectory(@"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments");
-                if (txt_DesPath.Text == @"C:\Users\Public\Documents\SoundMagic\NeoOrchestra\Instruments") cb_DefaultFolder.Checked = true;
+                txt_DesPath.Text = DirectoryModel.CheckDirectory(sampleSetPath);
+                if (txt_DesPath.Text == sampleSetPath) cb_DefaultFolder.Checked = true;
 
                 txt_32FolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
                 txt_64FolderPath.Text = DirectoryModel.CheckDirectory(@"C:\Program Files\Steinberg\VSTPlugins");
@@ -252,7 +291,7 @@ namespace DataReplication
         }
         private void ConfigureProperties()
         {
-            string[] configuration = File.ReadAllLines(Application.StartupPath + "\\DataReplication.config");
+            string[] configuration = File.ReadAllLines(Application.StartupPath + "\\App.config");
             string InstallerName = configuration[0];
             lab_installerName.Text = InstallerName;
         }
@@ -310,12 +349,6 @@ namespace DataReplication
                 MessageBox.Show(ex.Message);
             }
         }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void cb_DefaultFolder_CheckedChanged(object sender, EventArgs e)
         {
             if (cb_DefaultFolder.Checked)
@@ -356,12 +389,10 @@ namespace DataReplication
         {
             CheckVSTFolder();
         }
-
         private void cb_64bit_CheckedChanged(object sender, EventArgs e)
         {
             CheckVSTFolder();
         }
-
         private void btn_BrowseVST64bit_Click(object sender, EventArgs e)
         {
             try
@@ -381,11 +412,6 @@ namespace DataReplication
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        private void Form1_Activated(object sender, EventArgs e)
-        {
-
         }
     }
 }
